@@ -1,11 +1,11 @@
-'use client'
-import useCartService from '@/lib/hooks/useCartStore'
-import useLayoutService from '@/lib/hooks/useLayout'
-import { signIn, signOut, useSession } from 'next-auth/react'
+"use client"
+import useCartService from "@/lib/hooks/useCartStore"
+import useLayoutService from "@/lib/hooks/useLayout"
+import { signIn, signOut, useSession } from "next-auth/react"
 
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { SearchBox } from './SearchBox'
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { SearchBox } from "./SearchBox"
 
 const Menu = () => {
   const { items, init } = useCartService()
@@ -15,7 +15,7 @@ const Menu = () => {
   }, [])
 
   const signoutHandler = () => {
-    signOut({ callbackUrl: '/signin' })
+    signOut({ callbackUrl: "/signin" })
     init()
   }
 
@@ -40,7 +40,7 @@ const Menu = () => {
                 {/* this hidden checkbox controls the state */}
                 <input
                   type="checkbox"
-                  checked={theme === 'light'}
+                  checked={theme === "light"}
                   onChange={toggleTheme}
                 />
 
@@ -69,7 +69,7 @@ const Menu = () => {
               Cart
               {mounted && items.length != 0 && (
                 <div className="badge badge-secondary">
-                  {items.reduce((a, c) => a + c.qty, 0)}{' '}
+                  {items.reduce((a, c) => a + c.qty, 0)}{" "}
                 </div>
               )}
             </Link>
@@ -102,6 +102,12 @@ const Menu = () => {
                     {session.user.isAdmin && (
                       <li onClick={handleClick}>
                         <Link href="/admin/dashboard">Admin Dashboard</Link>
+                      </li>
+                    )}
+
+                    {session.user.role === "vendor" && (
+                      <li onClick={handleClick}>
+                        <Link href="/vendor/dashboard">Vendor Dashboard</Link>
                       </li>
                     )}
 

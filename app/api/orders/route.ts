@@ -1,8 +1,8 @@
-import { auth } from '@/lib/auth'
-import dbConnect from '@/lib/dbConnect'
-import OrderModel, { OrderItem } from '@/lib/models/OrderModel'
-import ProductModel from '@/lib/models/ProductModel'
-import { round2 } from '@/lib/utils'
+import { auth } from "@/lib/auth"
+import dbConnect from "@/lib/dbConnect"
+import OrderModel, { OrderItem } from "@/lib/models/OrderModel"
+import ProductModel from "@/lib/models/ProductModel"
+import { round2 } from "@/lib/utils"
 
 const calcPrices = (orderItems: OrderItem[]) => {
   // Calculate the items price
@@ -21,7 +21,7 @@ const calcPrices = (orderItems: OrderItem[]) => {
 export const POST = auth(async (req: any) => {
   if (!req.auth) {
     return Response.json(
-      { message: 'unauthorized' },
+      { message: "unauthorized" },
       {
         status: 401,
       }
@@ -35,8 +35,10 @@ export const POST = auth(async (req: any) => {
       {
         _id: { $in: payload.items.map((x: { _id: string }) => x._id) },
       },
-      'price'
+      "price vendor"
     )
+    const vendorId = dbProductPrices[0].vendor
+    console.log("vendorId", vendorId)
     const dbOrderItems = payload.items.map((x: { _id: string }) => ({
       ...x,
       product: x._id,
@@ -47,6 +49,18 @@ export const POST = auth(async (req: any) => {
     const { itemsPrice, taxPrice, shippingPrice, totalPrice } =
       calcPrices(dbOrderItems)
 
+    if (totalPrice !== payload.totalPrice) {
+      return Response.json(
+        {
+          message:
+            "Something went wrong! Please, refresh your page and try again.",
+        },
+        {
+          status: 500,
+        }
+      )
+    }
+
     const newOrder = new OrderModel({
       items: dbOrderItems,
       itemsPrice,
@@ -56,11 +70,12 @@ export const POST = auth(async (req: any) => {
       shippingAddress: payload.shippingAddress,
       paymentMethod: payload.paymentMethod,
       user: user._id,
+      vendor: vendorId,
     })
 
     const createdOrder = await newOrder.save()
     return Response.json(
-      { message: 'Order has been created', order: createdOrder },
+      { message: "Order has been created", order: createdOrder },
       {
         status: 201,
       }

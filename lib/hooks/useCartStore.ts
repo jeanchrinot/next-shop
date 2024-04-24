@@ -1,7 +1,7 @@
-import { create } from 'zustand'
-import { round2 } from '../utils'
-import { OrderItem, ShippingAddress } from '../models/OrderModel'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand"
+import { round2 } from "../utils"
+import { OrderItem, ShippingAddress } from "../models/OrderModel"
+import { persist } from "zustand/middleware"
 
 type Cart = {
   items: OrderItem[]
@@ -19,19 +19,19 @@ const initialState: Cart = {
   taxPrice: 0,
   shippingPrice: 0,
   totalPrice: 0,
-  paymentMethod: 'PayPal',
+  paymentMethod: "PayPal",
   shippingAddress: {
-    fullName: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
+    fullName: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "",
   },
 }
 
 export const cartStore = create<Cart>()(
   persist(() => initialState, {
-    name: 'cartStore',
+    name: "cartStore",
   })
 )
 
@@ -110,8 +110,8 @@ const calcPrice = (items: OrderItem[]) => {
   const itemsPrice = round2(
       items.reduce((acc, item) => acc + item.price * item.qty, 0)
     ),
-    shippingPrice = round2(itemsPrice > 100 ? 0 : 100),
-    taxPrice = round2(Number(0.15 * itemsPrice)),
+    shippingPrice = round2(itemsPrice > 100 ? 0 : 10),
+    taxPrice = round2(Number((0.15 * itemsPrice).toFixed(2))),
     totalPrice = round2(itemsPrice + shippingPrice + taxPrice)
   return { itemsPrice, shippingPrice, taxPrice, totalPrice }
 }

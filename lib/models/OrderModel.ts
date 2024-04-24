@@ -1,17 +1,22 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose"
 
 const orderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
+      required: true,
+    },
+    vendor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vendor",
       required: true,
     },
     items: [
       {
         product: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Product',
+          ref: "Product",
           required: true,
         },
         name: { type: String, required: true },
@@ -43,13 +48,14 @@ const orderSchema = new mongoose.Schema(
     timestamps: true,
   }
 )
-const OrderModel = mongoose.models.Order || mongoose.model('Order', orderSchema)
+const OrderModel = mongoose.models.Order || mongoose.model("Order", orderSchema)
 
 export default OrderModel
 
 export type Order = {
   _id: string
   user?: { name: string }
+  vendor?: { name: string }
   items: [OrderItem]
   shippingAddress: {
     fullName: string

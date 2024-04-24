@@ -1,17 +1,17 @@
-import CredentialsProvider from 'next-auth/providers/credentials'
-import bcrypt from 'bcryptjs'
-import dbConnect from './dbConnect'
-import UserModel from './models/UserModel'
-import NextAuth from 'next-auth'
+import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from "bcryptjs"
+import dbConnect from "./dbConnect"
+import UserModel from "./models/UserModel"
+import NextAuth from "next-auth"
 
 export const config = {
   providers: [
     CredentialsProvider({
       credentials: {
         email: {
-          type: 'email',
+          type: "email",
         },
-        password: { type: 'password' },
+        password: { type: "password" },
       },
       async authorize(credentials) {
         await dbConnect()
@@ -33,9 +33,9 @@ export const config = {
     }),
   ],
   pages: {
-    signIn: '/signin',
-    newUser: '/register',
-    error: '/signin',
+    signIn: "/signin",
+    newUser: "/register",
+    error: "/signin",
   },
   callbacks: {
     async jwt({ user, trigger, session, token }: any) {
@@ -45,9 +45,10 @@ export const config = {
           email: user.email,
           name: user.name,
           isAdmin: user.isAdmin,
+          role: user.role,
         }
       }
-      if (trigger === 'update' && session) {
+      if (trigger === "update" && session) {
         token.user = {
           ...token.user,
           email: session.user.email,

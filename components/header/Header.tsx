@@ -1,7 +1,8 @@
-import Link from 'next/link'
-import React from 'react'
-import Menu from './Menu'
-import { SearchBox } from './SearchBox'
+import Link from "next/link"
+import Image from "next/image"
+import React from "react"
+import Menu from "./Menu"
+import { SearchBox } from "./SearchBox"
 
 const Header = () => {
   return (
@@ -25,7 +26,13 @@ const Header = () => {
               </svg>
             </label>
             <Link href="/" className="btn btn-ghost text-lg">
-              Next Amazona V2
+              <Image
+                src="/ato.mg-logo.png"
+                alt={"Ato.MG Logo"}
+                width={150}
+                height={42}
+                className="object-cover"
+              />
             </Link>
           </div>
 

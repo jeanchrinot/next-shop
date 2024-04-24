@@ -1,16 +1,16 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import Providers from '@/components/Providers'
-import DrawerButton from '@/components/DrawerButton'
-import Sidebar from '@/components/Sidebar'
-import Header from '@/components/header/Header'
+import "./globals.css"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import Providers from "@/components/Providers"
+import DrawerButton from "@/components/DrawerButton"
+import Sidebar from "@/components/Sidebar"
+import Header from "@/components/header/Header"
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: 'Next Amazona V2',
-  description: 'Modern ECommerce Website',
+  title: "Next Shop",
+  description: "Reliable Shopping For All",
 }
 
 export default function RootLayout({
@@ -20,6 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json"></link>
+      </head>
       <body className={inter.className}>
         <Providers>
           <div className="drawer">

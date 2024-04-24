@@ -1,12 +1,12 @@
-'use client'
-import CheckoutSteps from '@/components/CheckoutSteps'
-import useCartService from '@/lib/hooks/useCartStore'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
-import useSWRMutation from 'swr/mutation'
-import Image from 'next/image'
+"use client"
+import CheckoutSteps from "@/components/CheckoutSteps"
+import useCartService from "@/lib/hooks/useCartStore"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
+import useSWRMutation from "swr/mutation"
+import Image from "next/image"
 
 const Form = () => {
   const router = useRouter()
@@ -24,10 +24,10 @@ const Form = () => {
   const { trigger: placeOrder, isMutating: isPlacing } = useSWRMutation(
     `/api/orders/mine`,
     async (url) => {
-      const res = await fetch('/api/orders', {
-        method: 'POST',
+      const res = await fetch("/api/orders", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           paymentMethod,
@@ -42,7 +42,7 @@ const Form = () => {
       const data = await res.json()
       if (res.ok) {
         clear()
-        toast.success('Order placed successfully')
+        toast.success("Order placed successfully")
         return router.push(`/order/${data.order._id}`)
       } else {
         toast.error(data.message)
@@ -51,10 +51,10 @@ const Form = () => {
   )
   useEffect(() => {
     if (!paymentMethod) {
-      return router.push('/payment')
+      return router.push("/payment")
     }
     if (items.length === 0) {
-      return router.push('/')
+      return router.push("/")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentMethod, router])
@@ -77,8 +77,8 @@ const Form = () => {
               <h2 className="card-title">Shipping Address</h2>
               <p>{shippingAddress.fullName}</p>
               <p>
-                {shippingAddress.address}, {shippingAddress.city},{' '}
-                {shippingAddress.postalCode}, {shippingAddress.country}{' '}
+                {shippingAddress.address}, {shippingAddress.city},{" "}
+                {shippingAddress.postalCode}, {shippingAddress.country}{" "}
               </p>
               <div>
                 <Link className="btn" href="/shipping">
