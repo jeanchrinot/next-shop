@@ -1,6 +1,7 @@
-import { cache } from 'react'
-import dbConnect from '@/lib/dbConnect'
-import ProductModel, { Product } from '@/lib/models/ProductModel'
+import { cache } from "react"
+import dbConnect from "@/lib/dbConnect"
+import ProductModel, { Product } from "@/lib/models/ProductModel"
+import CategoryModel, { Category } from "../models/CategoryModel"
 
 export const revalidate = 3600
 
@@ -22,6 +23,12 @@ const getBySlug = cache(async (slug: string) => {
   return product as Product
 })
 
+const getCategoryBySlug = cache(async (slug: string) => {
+  await dbConnect()
+  const category = await CategoryModel.findOne({ slug }).lean()
+  return category as Category
+})
+
 const PAGE_SIZE = 3
 const getByQuery = cache(
   async ({
@@ -30,7 +37,7 @@ const getByQuery = cache(
     sort,
     price,
     rating,
-    page = '1',
+    page = "1",
   }: {
     q: string
     category: string
@@ -41,18 +48,21 @@ const getByQuery = cache(
   }) => {
     await dbConnect()
 
+    const categoryObj = await CategoryModel.findOne({ slug: category })
+
     const queryFilter =
-      q && q !== 'all'
+      q && q !== "all"
         ? {
             name: {
               $regex: q,
-              $options: 'i',
+              $options: "i",
             },
           }
         : {}
-    const categoryFilter = category && category !== 'all' ? { category } : {}
+    const categoryFilter =
+      category && category !== "all" ? { category: categoryObj } : {}
     const ratingFilter =
-      rating && rating !== 'all'
+      rating && rating !== "all"
         ? {
             rating: {
               $gte: Number(rating),
@@ -61,24 +71,24 @@ const getByQuery = cache(
         : {}
     // 10-50
     const priceFilter =
-      price && price !== 'all'
+      price && price !== "all"
         ? {
             price: {
-              $gte: Number(price.split('-')[0]),
-              $lte: Number(price.split('-')[1]),
+              $gte: Number(price.split("-")[0]),
+              $lte: Number(price.split("-")[1]),
             },
           }
         : {}
     const order: Record<string, 1 | -1> =
-      sort === 'lowest'
+      sort === "lowest"
         ? { price: 1 }
-        : sort === 'highest'
+        : sort === "highest"
         ? { price: -1 }
-        : sort === 'toprated'
+        : sort === "toprated"
         ? { rating: -1 }
         : { _id: -1 }
 
-    const categories = await ProductModel.find().distinct('category')
+    const categories = await ProductModel.find().distinct("category")
     const products = await ProductModel.find(
       {
         ...queryFilter,
@@ -86,7 +96,7 @@ const getByQuery = cache(
         ...priceFilter,
         ...ratingFilter,
       },
-      '-reviews'
+      "-reviews"
     )
       .sort(order)
       .skip(PAGE_SIZE * (Number(page) - 1))
@@ -112,7 +122,7 @@ const getByQuery = cache(
 
 const getCategories = cache(async () => {
   await dbConnect()
-  const categories = await ProductModel.find().distinct('category')
+  const categories = await ProductModel.find().distinct("category")
   return categories
 })
 
@@ -120,6 +130,7 @@ const productService = {
   getLatest,
   getFeatured,
   getBySlug,
+  getCategoryBySlug,
   getByQuery,
   getCategories,
 }

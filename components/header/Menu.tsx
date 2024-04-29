@@ -29,70 +29,117 @@ const Menu = () => {
 
   return (
     <>
-      <div className="hidden md:block">
-        <SearchBox />
-      </div>
       <div>
-        <ul className="flex items-stretch">
-          <i>
+        <ul className="flex items-stretch items-center">
+          <li>
             {mounted && (
               <label className="swap swap-rotate">
-                {/* this hidden checkbox controls the state */}
-                <input
-                  type="checkbox"
-                  checked={theme === "light"}
-                  onChange={toggleTheme}
-                />
+                <div className="relative flex h-11 w-11 items-center justify-center rounded-md transition-colors">
+                  {/* this hidden checkbox controls the state */}
+                  <input
+                    type="checkbox"
+                    checked={theme === "light"}
+                    onChange={toggleTheme}
+                  />
 
-                {/* sun icon */}
-                <svg
-                  className="swap-on fill-current w-10 h-10"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
-                </svg>
-
-                {/* moon icon */}
-                <svg
-                  className="swap-off fill-current w-10 h-10"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
-                </svg>
+                  {theme === "light" ? (
+                    <svg
+                      className="swap-on h-10 transition-all ease-in-out hover:scale-110 "
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 5V3m0 18v-2M7.05 7.05 5.636 5.636m12.728 12.728L16.95 16.95M5 12H3m18 0h-2M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="swap-off h-10 transition-all ease-in-out hover:scale-110 "
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 21a9 9 0 0 1-.5-17.986V3c-.354.966-.5 1.911-.5 3a9 9 0 0 0 9 9c.239 0 .254.018.488 0A9.004 9.004 0 0 1 12 21Z"
+                      />
+                    </svg>
+                  )}
+                </div>
               </label>
             )}
-          </i>
-          <li>
-            <Link className="btn btn-ghost rounded-btn" href="/cart">
-              Cart
-              {mounted && items.length != 0 && (
-                <div className="badge badge-secondary">
-                  {items.reduce((a, c) => a + c.qty, 0)}{" "}
-                </div>
-              )}
+          </li>
+          <li className="ms-2">
+            <Link className="flex" href="/cart">
+              <div className="relative flex h-11 w-11 items-center justify-center rounded-md transition-colors">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  data-slot="icon"
+                  className="h-10 transition-all ease-in-out hover:scale-110 "
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                  ></path>
+                </svg>
+                {mounted && items.length != 0 && (
+                  <div className="badge badge-secondary">
+                    {items.reduce((a, c) => a + c.qty, 0)}{" "}
+                  </div>
+                )}
+              </div>
             </Link>
           </li>
           {session && session.user ? (
             <>
-              <li>
+              <li className="ms-2">
                 <div className="dropdown dropdown-bottom dropdown-end">
-                  <label tabIndex={0} className="btn btn-ghost rounded-btn">
+                  <label
+                    tabIndex={0}
+                    className="flex h-10 leading-10 underline-offset-4 hover:text-primary hover:underline cursor-pointer"
+                  >
                     {session.user.name}
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
+                      data-testid="geist-icon"
+                      height="16"
+                      stroke-linejoin="round"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      aria-hidden="true"
+                      style={{
+                        pointerEvents: "none",
+                        marginTop: "12px",
+                        marginLeft: "2px",
+                      }}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                      />
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M12.0607 6.74999L11.5303 7.28032L8.7071 10.1035C8.31657 10.4941 7.68341 10.4941 7.29288 10.1035L4.46966 7.28032L3.93933 6.74999L4.99999 5.68933L5.53032 6.21966L7.99999 8.68933L10.4697 6.21966L11 5.68933L12.0607 6.74999Z"
+                        fill="currentColor"
+                      ></path>
                     </svg>
                   </label>
                   <ul
@@ -127,13 +174,31 @@ const Menu = () => {
               </li>
             </>
           ) : (
-            <li>
+            <li className="ms-2">
               <button
-                className="btn btn-ghost rounded-btn"
+                aria-label="Sign in"
                 type="button"
                 onClick={() => signIn()}
               >
-                Sign in
+                <div className="relative flex h-11 w-11 items-center justify-center rounded-md transition-colors">
+                  <svg
+                    className="h-10 transition-all ease-in-out hover:scale-110 "
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    />
+                  </svg>
+                </div>
               </button>
             </li>
           )}

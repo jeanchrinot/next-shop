@@ -4,6 +4,7 @@ import CategoryModel from "@/lib/models/CategoryModel"
 import ProductModel from "@/lib/models/ProductModel"
 import UserModel from "@/lib/models/UserModel"
 import VendorModel from "@/lib/models/VendorModel"
+import { convertToSlug } from "@/lib/utils"
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (request: NextRequest) => {
@@ -29,7 +30,17 @@ export const GET = async (request: NextRequest) => {
   console.log("vendor", vendor)
 
   await CategoryModel.deleteMany()
-  await CategoryModel.insertMany(categories)
+
+  for (const category of categories) {
+    const slug = convertToSlug(category.name)
+    const newCategory = new CategoryModel({
+      name: category.name,
+      slug: slug,
+      description: category.description,
+    })
+    await newCategory.save()
+  }
+  // await CategoryModel.insertMany(categories)
 
   // Find the first category from MongoDB using Mongoose
   const firstCategory = await CategoryModel.findOne()
